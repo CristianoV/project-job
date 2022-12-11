@@ -20,18 +20,22 @@ def get_min_salary(path: str) -> int:
 
 
 def matches_salary_range(job: Dict, salary: Union[int, str]) -> bool:
-    if type(salary) == int or type(salary) == str:
-        if (
-            job.keys() == {"min_salary", "max_salary"}
-            and int(job["min_salary"]) < int(job["max_salary"])
-            and int(job["min_salary"]) >= 0 < int(job["max_salary"])
-        ):
-            if int(job["min_salary"]) <= int(salary) <= int(job["max_salary"]):
-                return True
-            else:
-                return False
+    if (
+        (type(salary) == int or type(salary) == str)
+        and job.keys() == {"min_salary", "max_salary"}
+        and (
+            type(job["min_salary"]) == str
+            and type(job["max_salary"]) == str
+            or type(job["min_salary"]) == int
+            and type(job["max_salary"]) == int
+        )
+        and int(job["min_salary"]) < int(job["max_salary"])
+        and int(job["min_salary"]) >= 0 < int(job["max_salary"])
+    ):
+        if int(job["min_salary"]) <= int(salary) <= int(job["max_salary"]):
+            return True
         else:
-            raise ValueError
+            return False
     else:
         raise ValueError
 
@@ -39,11 +43,11 @@ def matches_salary_range(job: Dict, salary: Union[int, str]) -> bool:
 def filter_by_salary_range(
     jobs: List[dict], salary: Union[str, int]
 ) -> List[Dict]:
-    x = []
+    jobs_list = []
     for job in jobs:
         try:
             if matches_salary_range(job, salary):
-                x.append(job)
+                jobs_list.append(job)
         except ValueError:
             pass
-    return x
+    return jobs_list
