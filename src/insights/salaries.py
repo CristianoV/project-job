@@ -20,16 +20,18 @@ def get_min_salary(path: str) -> int:
 
 
 def matches_salary_range(job: Dict, salary: Union[int, str]) -> bool:
+    if type(salary) == int or type(salary) == str:
     if (
         job.keys() == {"min_salary", "max_salary"}
-        and type(job["min_salary"]) == int
-        and type(job["max_salary"]) == int
         and int(job["min_salary"]) < int(job["max_salary"])
+            and int(job["min_salary"]) >= 0 < int(job["max_salary"])
     ):
         if int(job["min_salary"]) <= int(salary) <= int(job["max_salary"]):
             return True
         else:
             return False
+    else:
+        raise ValueError
     else:
         raise ValueError
 
